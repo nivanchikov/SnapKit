@@ -173,12 +173,26 @@ internal class ConcreteConstraint: Constraint {
     private let toItem: ConstraintItem
     private let relation: ConstraintRelation
     private let multiplier: Float
+	#if os(OSX)
+	private var useAnimator: Bool = false;
+	func animator() -> Self {
+		useAnimator = true;
+		return self;
+	}
+	#endif
     private var constant: Any {
         didSet {
             if let installInfo = self.installInfo {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
                     let attribute = (layoutConstraint.secondAttribute == .NotAnAttribute) ? layoutConstraint.firstAttribute : layoutConstraint.secondAttribute
-                    layoutConstraint.constant = attribute.snp_constantForValue(self.constant)
+					#if os(OSX)
+						if (useAnimator) {
+							layoutConstraint.animator().constant = attribute.snp_constantForValue(self.constant);
+							useAnimator = false;
+							return;
+						}
+					#endif
+					layoutConstraint.constant = attribute.snp_constantForValue(self.constant)
                 }
             }
         }
