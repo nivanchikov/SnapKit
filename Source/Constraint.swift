@@ -192,13 +192,15 @@ internal class ConcreteConstraint: Constraint {
 					#if os(OSX)
 					if (useAnimator) {
 						layoutConstraint.animator().constant = attribute.snp_constantForValue(self.constant);
-						useAnimator = false;
-						return;
+						continue;
 					}
 					#endif
 					layoutConstraint.constant = attribute.snp_constantForValue(self.constant)
                 }
             }
+			#if os(OSX)
+			useAnimator = false;
+			#endif
         }
     }
     private var priority: Float {
