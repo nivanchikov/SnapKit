@@ -186,11 +186,11 @@ internal class ConcreteConstraint: Constraint {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
                     let attribute = (layoutConstraint.secondAttribute == .NotAnAttribute) ? layoutConstraint.firstAttribute : layoutConstraint.secondAttribute
 					#if os(OSX)
-						if (useAnimator) {
-							layoutConstraint.animator().constant = attribute.snp_constantForValue(self.constant);
-							useAnimator = false;
-							return;
-						}
+					if (useAnimator) {
+						layoutConstraint.animator().constant = attribute.snp_constantForValue(self.constant);
+						useAnimator = false;
+						return;
+					}
 					#endif
 					layoutConstraint.constant = attribute.snp_constantForValue(self.constant)
                 }
