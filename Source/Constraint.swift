@@ -57,7 +57,11 @@ public class Constraint {
     public func updatePriorityHigh() -> Void { fatalError("Must be implemented by Concrete subclass.") }
     public func updatePriorityMedium() -> Void { fatalError("Must be implemented by Concrete subclass.") }
     public func updatePriorityLow() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    
+	
+	#if os(OSX)
+	public func animator() -> Self { fatalError("Must be implemented by Concrete subclass.") }
+	#endif
+	
     internal var makerLocation: SourceLocation = SourceLocation(file: "Unknown", line: 0)
     
     internal(set) public var location: SourceLocation?
@@ -175,7 +179,7 @@ internal class ConcreteConstraint: Constraint {
     private let multiplier: Float
 	#if os(OSX)
 	private var useAnimator: Bool = false;
-	func animator() -> Self {
+	internal override func animator() -> Self {
 		useAnimator = true;
 		return self;
 	}
